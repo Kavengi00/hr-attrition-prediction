@@ -8,3 +8,4 @@ pydantic
 requests
 pytest
 jinja2
+scikit-learn==1.6.1
