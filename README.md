@@ -253,8 +253,7 @@ scikit-learn
 
 ## **📸 Screenshots / Demo**
 
-* `/docs` Swagger UI screenshot
-* Prediction examples
+* Find `/docs` Swagger UI prediction screenshot on Screenshot_20-11-2025_21544_hr-attrition-prediction-3if9.onrender.com
 
 ---
 
