@@ -1,65 +1,71 @@
-Perfect! Based on the deliverables and evaluation criteria you shared, your README should **clearly demonstrate** that your project meets all points for maximum marks. Here’s a **GitHub-ready README template** tailored to your HR Attrition Prediction project, aligned with the deliverables:
-
 ```markdown
-# HR Attrition Prediction API
+# HR Attrition Prediction 🚀
 
-## 1. Project Description
-This project predicts employee attrition (whether an employee is likely to leave) using a machine learning model trained on HR datasets. The model leverages employee demographics, job-related features, satisfaction metrics, and performance indicators to generate:
-
-- Probability of attrition
-- Yes/No prediction
-- Risk level (High, Medium, Low)
-
-**Use Case:** Helps HR teams proactively identify employees at risk of leaving and take retention actions.
+[![Python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100.0-green)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/Docker-latest-blue?logo=docker)](https://www.docker.com/)
+[![Render](https://img.shields.io/badge/Render-Deployed-orange)](https://render.com/)
 
 ---
 
-## 2. Dataset
-- **File:** `HR-Employee-Attrition.csv`
-- **Source:** [Kaggle - IBM HR Analytics Attrition Dataset](https://www.kaggle.com/pavansubhasht/ibm-hr-analytics-attrition-dataset)
-- **Description:** Contains employee demographics, job info, compensation, satisfaction metrics, and performance ratings.
+## Project Overview
+
+This project predicts **employee attrition** using HR data. The model analyzes employee features and estimates the probability of leaving the company, helping HR teams make informed decisions about retention strategies.
+
+The prediction is served via a **FastAPI** REST API, containerized with **Docker**, and deployed to **Render** for easy access.
 
 ---
 
-## 3. Project Structure
+## Dataset
+
+The dataset used is `HR-Employee-Attrition.csv`. It contains employee features and attrition labels such as:
+
+- `Age`, `BusinessTravel`, `Department`, `DistanceFromHome`, `Education`, `EducationField`, `Gender`
+- `JobSatisfaction`, `MaritalStatus`, `MonthlyIncome`, `OverTime`, `JobRole_Grouped`
+- `DailyRate`, `HourlyRate`, `MonthlyRate`, `NumCompaniesWorked`, `PercentSalaryHike`, `YearsAtCompany`
+- `EnvironmentSatisfaction`, `JobInvolvement`, `RelationshipSatisfaction`, `WorkLifeBalance`, `JobLevel`
+- `YearsWithCurrManager`, `YearsInCurrentRole`, `TotalWorkingYears`, `PerformanceRating`, `StockOptionLevel`, `TrainingTimesLastYear`
+
+> **If the dataset is not committed to this repository**, download it from Kaggle:  
+> [IBM HR Analytics Employee Attrition & Performance](https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset)  
+> After downloading, place `HR-Employee-Attrition.csv` in the project root.
+
+---
+
+## Project Structure
 
 ```
 
-hr_attrition/
-│
-├─ main.py                 # FastAPI app serving the model
-├─ predict.py              # Script for prediction
+hr-attrition-prediction/
+├─ main.py                 # FastAPI app
+├─ predict.py              # Script for loading model and making predictions
 ├─ train.py                # Script for training and saving model
-├─ classification.ipynb    # Notebook: data cleaning, EDA, feature importance, model selection
-├─ HR-Employee-Attrition.csv # Dataset
-├─ Dockerfile              # Containerization
 ├─ requirements.txt        # Python dependencies
-├─ final_logistic_model.pkl
-├─ preprocessor_ohe.pkl
-├─ scaler_continuous.pkl
-├─ selected_features.pkl
-└─ continuous_cols.pkl
+├─ Dockerfile              # Docker container configuration
+├─ HR-Employee-Attrition.csv # Dataset
+├─ templates/              # HTML templates for form-based UI
+├─ final_logistic_model.pkl # Saved model
+└─ ...                     # Other artifacts like preprocessors and pickles
 
 ````
 
 ---
 
-## 4. Installation
+## Setup & Installation
 
-1. **Clone repository**
+1. **Clone the repository**
+
 ```bash
 git clone https://github.com/Kavengi00/hr-attrition-prediction.git
 cd hr-attrition-prediction
 ````
 
-2. **Set up virtual environment**
+2. **Create a virtual environment and activate it**
 
 ```bash
 python -m venv venv
-# Windows
-venv\Scripts\activate
-# Mac/Linux
-source venv/bin/activate
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
 ```
 
 3. **Install dependencies**
@@ -68,63 +74,107 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
-
-## 5. Running Locally
+4. **Run locally with FastAPI**
 
 ```bash
 uvicorn main:app --reload
 ```
 
-* API root: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-* Predict via API: Use the interactive Swagger UI at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* Access the API documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* Test predictions using the `/predict` endpoint or the `/predict_form` HTML form.
 
 ---
 
-## 6. Docker Usage
+## Deployment
 
-1. **Build Docker image**
+This project is deployed using **Render** with Docker.
 
-```bash
-docker build -t hr-attrition-api .
+* **Deployed URL:** [Your Render URL here]
+
+### Steps:
+
+1. Create a new Web Service in Render.
+2. Connect your GitHub repository `hr-attrition-prediction`.
+3. Select **Docker** as the environment.
+4. Set `Dockerfile` as the build path.
+5. Start the service.
+6. Access the live API at the provided Render URL, e.g., `https://hr-attrition-prediction.onrender.com/docs`.
+
+---
+
+## How to Use the API
+
+### Predict via API
+
+Send a **POST** request with JSON data containing all employee features to:
+
+```
+POST /predict
 ```
 
-2. **Run container**
+Example JSON:
 
-```bash
-docker run -d -p 8000:8000 hr-attrition-api
+```json
+{
+  "Age": 41,
+  "BusinessTravel": "Travel_Rarely",
+  "Department": "Sales",
+  "DistanceFromHome": 1,
+  "Education": 2,
+  "EducationField": "Life Sciences",
+  "Gender": "Female",
+  "JobSatisfaction": 4,
+  "MaritalStatus": "Single",
+  "MonthlyIncome": 5993,
+  "OverTime": "Yes",
+  "JobRole_Grouped": "Sales Executive",
+  "DailyRate": 1102,
+  "HourlyRate": 94,
+  "MonthlyRate": 19479,
+  "NumCompaniesWorked": 8,
+  "PercentSalaryHike": 11,
+  "YearsAtCompany": 6,
+  "YearsSinceLastPromotion": 0,
+  "EnvironmentSatisfaction": 3,
+  "JobInvolvement": 3,
+  "RelationshipSatisfaction": 1,
+  "WorkLifeBalance": 1,
+  "JobLevel": 2,
+  "YearsWithCurrManager": 5,
+  "YearsInCurrentRole": 4,
+  "TotalWorkingYears": 8,
+  "PerformanceRating": 3,
+  "StockOptionLevel": 0,
+  "TrainingTimesLastYear": 0
+}
 ```
 
-3. Open [http://127.0.0.1:8000](http://127.0.0.1:8000) to interact with the API.
+* **Response:**
+
+```json
+{
+  "attrition_probability": 0.67,
+  "will_leave": "Yes",
+  "risk_level": "Medium"
+}
+```
+
+### Predict via HTML Form
+
+* Access `/predict_form` to submit employee data using a web form.
 
 ---
 
-## 7. Model Details
+## Features & Techniques
 
-* **Type:** Logistic Regression
-* **Features:** Employee demographics, satisfaction metrics, compensation, performance indicators, job info
-* **Preprocessing:** One-hot encoding for categorical features, standard scaling for continuous features
-* **Outputs:** Probability, Yes/No prediction, Risk level
-* **Risk level thresholds:**
-
-  * High: >0.7
-  * Medium: 0.3–0.7
-  * Low: <0.3
+* Data Cleaning & EDA (Exploratory Data Analysis)
+* Feature Importance Analysis
+* Logistic Regression Model
+* Model Export using Pickle
+* Preprocessing with One-Hot Encoding & Scaling
+* API Development using **FastAPI**
+* Deployment with **Docker** and **Render**
 
 ---
-
-## 8. How to Use
-
- **API:** Send POST JSON request with employee features to `/predict`.
-
-
----
-
-## 9. Reproducibility
-
-* All required pickle files (`final_logistic_model.pkl`, `preprocessor_ohe.pkl`, etc.) are included.
-* Dataset is included or can be downloaded from Kaggle.
-* Full instructions above ensure the project runs locally and in Docker.
-
----
-
+Do you want me to do that next?
+```
